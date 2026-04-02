@@ -11,10 +11,7 @@ import { UserStore } from './user-store';
 import { UserPermission } from './user-permission';
 
 describe('permissionGuard', () => {
-  const executeGuard = (
-    permissions: UserPermission[],
-    mode?: 'any' | 'all',
-  ): CanActivateFn => {
+  const executeGuard = (permissions: UserPermission[], mode?: 'any' | 'all'): CanActivateFn => {
     return (...guardParameters) =>
       TestBed.runInInjectionContext(() => permissionGuard(permissions, mode)(...guardParameters));
   };
