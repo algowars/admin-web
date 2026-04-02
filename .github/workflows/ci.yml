@@ -1,0 +1,70 @@
+name: CI
+
+env:
+  node_version: '24.11.1'
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061
+        with:
+          version: 10.27.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.node_version }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build --configuration=staging
+        env:
+          NODE_ENV: development
+          NG_APP_API_SERVER_URL: ${{ vars.STAGING_API_SERVER_URL }}
+          NG_APP_AUTH_DOMAIN: ${{ vars.STAGING_AUTH_DOMAIN }}
+          NG_APP_AUTH_CLIENT_ID: ${{ vars.STAGING_AUTH_CLIENT_ID }}
+          NG_APP_AUTH_AUDIENCE: ${{ vars.STAGING_AUTH_AUDIENCE }}
+          NG_APP_AUTH_CALLBACK_URL: ${{ vars.STAGING_AUTH_CALLBACK_URL }}
+          NG_APP_AUTH_CACHE_LOCATION: ${{ vars.STAGING_AUTH_CACHE_LOCATION }}
+          NG_APP_AUTH_USE_REFRESH_TOKENS: ${{ vars.STAGING_AUTH_USE_REFRESH_TOKENS }}
+
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Run prettier
+        run: pnpm prettier --check "**/*.{ts,js,json,css,html}"
+
+      - name: Run tests
+        run: pnpm test --watch=false --coverage
+        env:
+          NODE_ENV: development
+          NG_APP_API_SERVER_URL: ${{ vars.STAGING_API_SERVER_URL }}
+          NG_APP_AUTH_DOMAIN: ${{ vars.STAGING_AUTH_DOMAIN }}
+          NG_APP_AUTH_CLIENT_ID: ${{ vars.STAGING_AUTH_CLIENT_ID }}
+          NG_APP_AUTH_AUDIENCE: ${{ vars.STAGING_AUTH_AUDIENCE }}
+          NG_APP_AUTH_CALLBACK_URL: ${{ vars.STAGING_AUTH_CALLBACK_URL }}
+          NG_APP_AUTH_CACHE_LOCATION: ${{ vars.STAGING_AUTH_CACHE_LOCATION }}
+          NG_APP_AUTH_USE_REFRESH_TOKENS: ${{ vars.STAGING_AUTH_USE_REFRESH_TOKENS }}
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-pr
+          path: coverage/
