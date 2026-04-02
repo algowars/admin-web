@@ -1,0 +1,35 @@
+<nav>
+  <div class="mx-auto container flex items-center py-4 px-4">
+    <h1>
+      <a [routerLink]="'/'" class="spacing-tight font-semibold text-xl uppercase">Algowars</a>
+    </h1>
+    <ul class="flex items-center gap-3 ml-auto">
+      @for (item of navItems(); track $index) {
+        @if (item.onClick !== undefined) {
+          <li>
+            <p-button
+              (onClick)="item.onClick()"
+              [size]="item.size"
+              [variant]="item.variant"
+              [severity]="item.severity"
+            >
+              {{ item.label }}
+            </p-button>
+          </li>
+        } @else {
+          <li>
+            <a
+              [routerLink]="item.path"
+              pButton
+              [size]="item.size"
+              [text]="item.variant === 'text'"
+              [severity]="item.severity"
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+</nav>
