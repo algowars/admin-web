@@ -2,10 +2,31 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
+import { provideAuth0 } from '@auth0/auth0-angular';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
+    providers: [
+    provideAuth0(environment.auth),
+    provideHttpClient(withInterceptors([customAuthInterceptor])),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+
+    MessageService,
+    providePrimeNG({
+      theme: {
+        preset: themePreset,
+        options: {
+          prefix: 'p',
+          darkModeSelector: '.p-dark',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme, base, primeng',
+          },
+          ripple: true,
+        },
+      },
+    }),
+  ],
 };
