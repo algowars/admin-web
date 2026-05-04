@@ -39,8 +39,9 @@ testem.log
 /typings
 __screenshots__/
 
+.env*
+!.env.example
+
 # System files
 .DS_Store
 Thumbs.db
-
-.env
