@@ -1,5 +1,4 @@
 import { Component, computed, inject, Signal, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
