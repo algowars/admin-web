@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const environment = {
   production: true,
   apiServerUrl: import.meta.env['NG_APP_API_SERVER_URL'],
