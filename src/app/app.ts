@@ -8,7 +8,6 @@ import { UserStore } from './user/user-store';
   selector: 'app-root',
   imports: [RouterOutlet, ToastModule],
   templateUrl: './app.html',
-  providers: [],
 })
 export class App {
   private readonly auth0Store = inject(Auth0Store);

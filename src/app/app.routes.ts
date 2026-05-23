@@ -1,18 +1,20 @@
 import { Routes } from '@angular/router';
-import { NotFound } from './not-found/not-found';
-import { Home } from './home/home';
+import { AuthGuard } from '@auth0/auth0-angular';
+import { adminGuard } from './auth/admin.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home,
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
   },
   {
-    path: 'forbidden',
-    loadComponent: () => import('./forbidden/forbidden').then((m) => m.Forbidden),
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    loadComponent: () => import('./dashboard/dashboard').then((m) => m.Dashboard),
   },
   {
     path: '**',
-    component: NotFound,
+    loadComponent: () => import('./not-found/not-found').then((m) => m.NotFound),
   },
 ];

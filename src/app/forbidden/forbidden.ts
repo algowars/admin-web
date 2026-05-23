@@ -1,18 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { LandingLayout } from '../shared/layouts/landing-layout/landing-layout';
-import { Location } from '@angular/common';
-import { Button, ButtonDirective } from 'primeng/button';
-import { RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-forbidden',
-  imports: [LandingLayout, Button, RouterLink, ButtonDirective],
+  imports: [],
   templateUrl: './forbidden.html',
+  styleUrl: './forbidden.css',
 })
 export class Forbidden {
-  private readonly location = inject(Location);
 
-  goBack() {
-    this.location.back();
-  }
 }
