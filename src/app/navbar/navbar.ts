@@ -12,6 +12,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class Navbar {
   private readonly auth = inject(AuthService);
 
+  constructor() {
+    this.auth.idTokenClaims$.subscribe((claims) => {
+      console.log('ID Token Claims:', claims);
+    });
+  }
   private readonly isAuthenticated = toSignal(this.auth.isAuthenticated$);
 
   private readonly baseMenuItems = signal([
